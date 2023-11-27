@@ -12,7 +12,7 @@ export class CountriesComponent implements OnInit {
 
   }
   country: string = "Moldova";
-  displayedColumns: string[] = ['id', 'name', 'capital', 'continent', 'population', 'area'];
+  displayedColumns: string[] = ['id', 'name', 'capital', 'continent', 'population', 'area', 'actions'];
   dataSource: CountryModel[];
 
   ngOnInit(): void {

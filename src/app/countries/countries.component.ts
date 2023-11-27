@@ -12,12 +12,13 @@ export class CountriesComponent implements OnInit {
 
   }
   country: string = "Moldova";
-  countries: CountryModel[] = [];
+  displayedColumns: string[] = ['id', 'name', 'capital', 'continent', 'population', 'area'];
+  dataSource: CountryModel[];
 
   ngOnInit(): void {
     this.country = "Kazakhstan";
     this.countriesApi.getAll().subscribe(result => {
-      this.countries = result.map((element: any) => {
+      this.dataSource = result.map((element: any) => {
         return {
           id: element.id,
           area: element.area,
@@ -27,9 +28,7 @@ export class CountriesComponent implements OnInit {
           population: element.population,
           cities: []
         };
-      })
-
-      console.log(this.countries[0]);
+      });
     });
   }
 

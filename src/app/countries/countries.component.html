@@ -1,0 +1,29 @@
+<div class="center">
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Capital</th>
+                <th>Continent</th>
+                <th>Population</th>
+                <th>Area</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let country of countries">
+                <td>{{ country.id }}</td>
+                <td>{{ country.name }}</td>
+                <td>{{ country.capital }}</td>
+                <td>{{ country.continent }}</td>
+                <td>{{ country.population }}</td>
+                <td>{{ country.area }}</td>
+                <td>
+                    <button (click)="update()">Update</button>
+                    <button (click)="delete()" style="margin-left: 5px;">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

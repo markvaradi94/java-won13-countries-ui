@@ -1,0 +1,29 @@
+<div>
+    <form [formGroup]="countryForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill" style="margin: 10px;">
+            <mat-label>Name</mat-label>
+            <input matInput id="name" type="text" formControlName="name">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="margin: 10px;">
+            <mat-label>Capital</mat-label>
+            <input matInput id="capital" type="text" formControlName="capital">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="margin: 10px;">
+            <mat-label>Continent</mat-label>
+            <input matInput id="continent" type="text" formControlName="continent">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="margin: 10px;">
+            <mat-label>Population</mat-label>
+            <input matInput id="population" type="text" formControlName="population">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="margin: 10px;">
+            <mat-label>Area</mat-label>
+            <input matInput id="area" type="text" formControlName="area">
+        </mat-form-field>
+        <div>
+            <button mat-raised-button color="primary" style="margin: 10px;" type="submit"
+                [disabled]="!countryForm.valid">Save</button>
+            <button mat-raised-button color="warn" (click)="cancel()">Cancel</button>
+        </div>
+    </form>
+</div>

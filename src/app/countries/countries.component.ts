@@ -1,28 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { CountriesApiService } from '../services/countries-api.service';
 import { CountryModel } from '../models/country.model';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
+import { CountryFormComponent } from '../country-form/country-form.component';
 
 @Component({
   selector: 'app-countries',
   templateUrl: './countries.component.html',
   styleUrls: ['./countries.component.css']
 })
-export class CountriesComponent implements OnInit {
-  constructor(private countriesApi: CountriesApiService) {
+export class CountriesComponent implements OnInit, AfterViewInit {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
-  }
   country: string = "Moldova";
   displayedColumns: string[] = ['id', 'name', 'capital', 'continent', 'population', 'area', 'actions'];
-  dataSource: CountryModel[];
+  dataSource: MatTableDataSource<CountryModel> = new MatTableDataSource();
+
+  constructor(private countriesApi: CountriesApiService, private dialogRef: MatDialog) {
+
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
 
   ngOnInit(): void {
     this.country = "Kazakhstan";
     this.countriesApi.getAll().subscribe(result => {
-      this.dataSource = result.map((element: any) => {
+      this.dataSource.data = result.map((element: any) => {
         return {
           id: element.id,
           area: element.area,
-          capital: element.capital,
+          capital: element.capital.name,
           continent: element.continent,
           name: element.name,
           population: element.population,
@@ -32,15 +46,21 @@ export class CountriesComponent implements OnInit {
     });
   }
 
-  saySomething(): string {
-    return 'hi from my method';
-  }
+  openDialog(country: CountryModel): void {
+    const dialogRef = this.dialogRef.open(CountryFormComponent, {
+      width: '500px',
+      backdropClass: 'custom-dialog-backdrop-class',
+      panelClass: 'custom-dialog-panel-class',
+      data: country
+    });
 
-  update(): void {
-    console.log('update was clicked');
-  }
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('close');
 
-  delete(): void {
-    console.log('delete was clicked');
+      if (result?.event === 'submit') {
+        console.log(result.data);
+        this.countriesApi.updateCountry(country.id, result.data).subscribe();
+      }
+    })
   }
 }

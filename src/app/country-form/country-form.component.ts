@@ -31,11 +31,13 @@ export class CountryFormComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.countryForm.controls.name.setValue(this.currentCountry.name);
-    this.countryForm.controls.capital.setValue(this.currentCountry.capital);
-    this.countryForm.controls.continent.setValue(this.currentCountry.continent);
-    this.countryForm.controls.population.setValue(this.currentCountry.population.toString());
-    this.countryForm.controls.area.setValue(this.currentCountry.area.toString());
+    if (this.currentCountry) {
+      this.countryForm.controls.name.setValue(this.currentCountry.name);
+      this.countryForm.controls.capital.setValue(this.currentCountry.capital);
+      this.countryForm.controls.continent.setValue(this.currentCountry.continent);
+      this.countryForm.controls.population.setValue(this.currentCountry.population.toString());
+      this.countryForm.controls.area.setValue(this.currentCountry.area.toString());
+    }
   }
 
   onSubmit(): void {
@@ -48,7 +50,11 @@ export class CountryFormComponent implements OnInit {
       area: this.countryForm.controls.area.getRawValue()
     }
 
-    this.dialogRef.close({ event: 'submit', data: updatedCountry });
+    if (this.currentCountry) {
+      this.dialogRef.close({ event: 'submit', data: updatedCountry });
+    } else {
+      this.dialogRef.close({ event: 'add', data: updatedCountry });
+    }
   }
 
   cancel(): void {

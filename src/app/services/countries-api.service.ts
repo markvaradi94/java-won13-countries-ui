@@ -7,15 +7,23 @@ import { CountryModel } from '../models/country.model';
   providedIn: 'root'
 })
 export class CountriesApiService {
+  private url: string = 'http://localhost:8080/countries';
 
   constructor(private httpClient: HttpClient) { }
 
   getAll(): Observable<any> {
-    // var response = this.httpClient.get("http://localhost:8080/countries");
-    return this.httpClient.get('http://localhost:8080/countries');
+    return this.httpClient.get(this.url);
   }
 
   updateCountry(id: number, request: CountryModel): Observable<any> {
-    return this.httpClient.patch('http://localhost:8080/countries/' + id, request);
+    return this.httpClient.patch(this.url + '/' + id, request);
+  }
+
+  deleteCountry(id: number): Observable<any> {
+    return this.httpClient.delete(this.url + '/' + id);
+  }
+
+  addCountry(request: CountryModel) {
+    return this.httpClient.post(this.url, request);
   }
 }

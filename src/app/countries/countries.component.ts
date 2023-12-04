@@ -46,7 +46,7 @@ export class CountriesComponent implements OnInit, AfterViewInit {
     });
   }
 
-  openDialog(country: CountryModel): void {
+  openDialog(country?: CountryModel): void {
     const dialogRef = this.dialogRef.open(CountryFormComponent, {
       width: '500px',
       backdropClass: 'custom-dialog-backdrop-class',
@@ -57,10 +57,21 @@ export class CountriesComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('close');
 
-      if (result?.event === 'submit') {
+      if (result?.event === 'submit' && country) {
         console.log(result.data);
         this.countriesApi.updateCountry(country.id, result.data).subscribe();
+        location.reload();
+      } else if (result.event === 'add') {
+        this.countriesApi.addCountry(result.data).subscribe();
+        location.reload();
       }
     })
+  }
+
+  deleteCountry(id: number): void {
+    this.countriesApi.deleteCountry(id).subscribe(result => {
+      console.log(result);
+      location.reload();
+    });
   }
 }

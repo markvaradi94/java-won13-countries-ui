@@ -5,3 +5,15 @@ table {
 .table-container {
     border: 1px solid lightgray;
 }
+
+.card {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.add-button {
+    width: 50%;
+    margin-left: 50%;
+    display: inline-block;
+}

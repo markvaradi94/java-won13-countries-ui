@@ -18,13 +18,11 @@ export class CountryFormComponent implements OnInit {
   });
 
   currentCountry: CountryModel;
-  isSearch: boolean;
 
   constructor(public dialogRef: MatDialogRef<CountryFormComponent>,
     @Optional() @Inject(MAT_DIALOG_DATA) data: any
   ) {
-    this.currentCountry = data.value;
-    this.isSearch = data.isSearch;
+    this.currentCountry = data;
   }
 
   ngOnInit(): void {
@@ -46,8 +44,6 @@ export class CountryFormComponent implements OnInit {
 
     if (this.currentCountry) {
       this.dialogRef.close({ event: 'submit', data: { value: updatedCountry, isSearch: false } });
-    } else if (this.isSearch) {
-      this.dialogRef.close({ event: 'search', data: { value: updatedCountry, isSearch: true } });
     } else {
       this.dialogRef.close({ event: 'add', data: { value: updatedCountry, isSearch: false } });
     }

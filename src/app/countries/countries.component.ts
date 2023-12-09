@@ -43,27 +43,54 @@ export class CountriesComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  openDialog(country: CountryModel): void {
+  openDialog(search?: boolean, country?: CountryModel): void {
     console.log('opening dialog');
     const dialogRef = this.dialogRef.open(CountryFormComponent, {
       width: '500px',
       backdropClass: 'custom-dialog-backdrop-class',
       panelClass: 'custom-dialog-panel-class',
-      data: country
+      data: { isSearch: search, value: country }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('close');
 
-      if (result.event === 'submit') {
+      if (result.event === 'submit' && country) {
         console.log(result.data);
         this.countriesApi.updateCountry(country.id, result.data).subscribe();
         location.reload();
+      } else if (result.event === 'add') {
+        this.countriesApi.addCountry(result.data).subscribe();
+        location.reload();
+      } else if (result.event === 'search') {
+        let values = result.data.value;
+        let filters = {
+          name: values.name,
+          capital: values.capital,
+          continent: values.continent,
+          maxPopulation: values.population,
+          maxArea: values.area
+        }
+
+        this.countriesApi.getAll(filters).subscribe(result => {
+          this.dataSource.data = result.map((element: any) => {
+            return {
+              id: element.id,
+              area: element.area,
+              capital: element.capital.name,
+              continent: element.continent,
+              name: element.name,
+              population: element.population,
+              cities: []
+            };
+          })
+        });
       }
     })
   }
 
-  delete(): void {
-    console.log('delete was clicked');
+  delete(id: number): void {
+    this.countriesApi.deleteCountry(id).subscribe();
+    location.reload();
   }
 }

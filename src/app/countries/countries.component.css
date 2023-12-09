@@ -9,3 +9,8 @@ button {
 .table-container {
     border: 1px solid lightgray;
 }
+
+.add-button {
+    width: 50%;
+    margin-left: 50%;
+}
